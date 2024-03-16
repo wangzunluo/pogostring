@@ -41,4 +41,5 @@ def pullpve():
     with open('raw/pve.csv', 'w') as f:
         f.write(sheet.text)
 
+pullpve()
 pullpvp()

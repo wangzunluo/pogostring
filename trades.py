@@ -43,11 +43,17 @@ def filterpvp():
         parse.PPATH + parse.PVPU + parse.PEXT,
         parse.PPATH + parse.PVPM + parse.PEXT
     ]
+    pvpmons = []
     for pvp in pvps:
         with open(pvp) as f:
-            pvpmons = json.load(f)
-        for pkmn in pvpmons:
-            allpkmn.add(filter_name(pkmn['Pokemon']))
+            pvpmons.append(json.load(f))
+    
+    for league in pvpmons[0:2]:
+        for pkmn in list(league.keys())[:200]:
+            allpkmn.add(filter_name(pkmn))
+    
+    for pkmn in list(pvpmons[2].keys())[:100]:
+        allpkmn.add(filter_name(pkmn))
     return
 
 def main():
@@ -75,7 +81,7 @@ def shorten():
         names = json.load(f)
 
     for mon in allpkmn:
-        printme.add(names[mon])
+        printme.add(names.get(mon, mon))
         devomon = devo.get(mon)
         while devomon:
             printme.add(names[devomon])
@@ -83,9 +89,6 @@ def shorten():
     add_modifiers(printme)
     print(*printme, sep ='& !')
 
-
-
 main()
 filterpvp()
-print(*allpkmn, sep =', !')
 shorten()
